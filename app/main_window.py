@@ -2,11 +2,11 @@ import sys
 import os
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton,
-    QLabel, QStackedWidget, QStatusBar, QFrame, QGridLayout, QCheckBox
+    QLabel, QStackedWidget, QStatusBar, QFrame, QGridLayout, QCheckBox,
+    QRadioButton, QButtonGroup, QGroupBox
 )
-from PySide6.QtCore import Qt, QSize, QPropertyAnimation, QEasingCurve
+from PySide6.QtCore import Qt, QSize, QPropertyAnimation, QEasingCurve, QSettings
 from PySide6.QtGui import QIcon
-from qt_material import apply_stylesheet, get_theme
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -14,7 +14,11 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Turbo GST")
         self.resize(1024, 768)
         self.is_sidebar_collapsed = False
-
+        
+        # Initialize settings
+        self.settings = QSettings("TurboGST", "App")
+        self.current_theme = self.settings.value("theme", "dark")
+        
         # Main layout
         main_layout = QHBoxLayout()
         main_layout.setSpacing(0)
@@ -41,8 +45,28 @@ class MainWindow(QMainWindow):
         self.status_bar.addWidget(self.status_label)
         self.status_bar.addPermanentWidget(self.version_label)
 
+        # Apply initial theme
+        self.apply_theme(self.current_theme)
+        
         # Set initial page
         self._update_active_button(self.home_button)
+
+    def apply_theme(self, theme):
+        """Apply the selected theme to the application"""
+        try:
+            if theme == "dark":
+                with open("resources/styles/dark_theme.qss", "r") as f:
+                    stylesheet = f.read()
+            else:  # light theme
+                with open("resources/styles/light_theme.qss", "r") as f:
+                    stylesheet = f.read()
+            
+            self.setStyleSheet(stylesheet)
+            self.settings.setValue("theme", theme)
+            self.current_theme = theme
+            self.status_label.setText(f"Status: Theme changed to {theme}")
+        except FileNotFoundError as e:
+            print(f"Warning: Stylesheet not found. {e}")
 
     def _create_sidebar(self):
         sidebar = QWidget()
@@ -100,7 +124,6 @@ class MainWindow(QMainWindow):
         return sidebar
 
     def _create_main_content(self):
-        # ... (This method remains the same as before)
         main_content = QWidget()
         main_content.setObjectName("mainContent")
         main_content_layout = QVBoxLayout(main_content)
@@ -112,7 +135,7 @@ class MainWindow(QMainWindow):
         self.home_page = self._create_home_page()
         self.gstr1_page = self._create_gstr1_page()
         self.gstr2_page = self._create_placeholder_page("GSTR-2")
-        self.settings_page = self._create_placeholder_page("Settings")
+        self.settings_page = self._create_settings_page()
         self.about_page = self._create_placeholder_page("About")
 
         self.stacked_widget.addWidget(self.home_page)
@@ -129,6 +152,64 @@ class MainWindow(QMainWindow):
 
         return main_content
 
+    def _create_settings_page(self):
+        """Create the settings page with theme selection"""
+        page = QWidget()
+        layout = QVBoxLayout(page)
+        layout.setAlignment(Qt.AlignTop)
+        
+        header = QLabel("Application Settings")
+        header.setObjectName("sectionHeader")
+        layout.addWidget(header)
+
+        card = QFrame()
+        card.setObjectName("contentCard")
+        card_layout = QVBoxLayout(card)
+        
+        # Theme Selection Group
+        theme_group = QGroupBox("Appearance")
+        theme_layout = QVBoxLayout()
+        
+        self.dark_theme_radio = QRadioButton("Dark Theme")
+        self.light_theme_radio = QRadioButton("Light Theme")
+        
+        theme_layout.addWidget(self.dark_theme_radio)
+        theme_layout.addWidget(self.light_theme_radio)
+        theme_group.setLayout(theme_layout)
+        
+        # Set initial selection based on saved theme
+        if self.current_theme == "dark":
+            self.dark_theme_radio.setChecked(True)
+        else:
+            self.light_theme_radio.setChecked(True)
+        
+        # Create button group for exclusive selection
+        self.theme_button_group = QButtonGroup()
+        self.theme_button_group.addButton(self.dark_theme_radio)
+        self.theme_button_group.addButton(self.light_theme_radio)
+        
+        # Connect radio buttons to theme change
+        self.dark_theme_radio.clicked.connect(lambda: self.apply_theme("dark"))
+        self.light_theme_radio.clicked.connect(lambda: self.apply_theme("light"))
+        
+        card_layout.addWidget(theme_group)
+        
+        # Additional settings section
+        general_group = QGroupBox("General Settings")
+        general_layout = QVBoxLayout()
+        
+        # Add any additional settings here
+        # For example:
+        # auto_save_checkbox = QCheckBox("Enable auto-save")
+        # general_layout.addWidget(auto_save_checkbox)
+        
+        general_group.setLayout(general_layout)
+        card_layout.addWidget(general_group)
+        
+        card_layout.addStretch()
+        layout.addWidget(card)
+        return page
+
     def _create_home_page(self):
         page = QWidget()
         layout = QVBoxLayout(page)
@@ -143,7 +224,7 @@ class MainWindow(QMainWindow):
         card_layout = QVBoxLayout(card)
         
         instructions_title = QLabel("Instructions")
-        instructions_title.setObjectName("cardTitleLabel") # Use object name instead of inline style
+        instructions_title.setObjectName("cardTitleLabel")
         card_layout.addWidget(instructions_title)
 
         desc1 = QLabel("To get started, select either GSTR-1 or GSTR-2 from the sidebar menu. Then use the 'File' or 'Folder' buttons to select your JSON data.")
@@ -235,7 +316,6 @@ class MainWindow(QMainWindow):
         return page
 
     def _create_placeholder_page(self, title):
-        # ... (This method remains the same)
         page = QWidget()
         layout = QVBoxLayout(page)
         label = QLabel(f"{title} page is under construction.")
@@ -291,10 +371,3 @@ class MainWindow(QMainWindow):
         self.animation.setEndValue(end_width)
         self.animation.setEasingCurve(QEasingCurve.InOutCubic)
         self.animation.start()
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    apply_stylesheet(app, theme='dark_blue.xml')
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())

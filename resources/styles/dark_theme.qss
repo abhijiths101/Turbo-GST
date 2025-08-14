@@ -1,162 +1,304 @@
 /*
- * Turbo-GST Dark Theme
- * Translated from turbo_gst_dark_ui_v2.html
+ * Turbo-GST Modern Dark Theme (Qt-Compatible - Fixed)
+ * Removed all unsupported CSS properties
  */
 
 /* ---- Global Settings ---- */
 QWidget {
-    font-family: "Inter", sans-serif;
-    color: #e2e8f0; /* --foreground */
-    background-color: #1a202c; /* --background */
+    font-family: "Inter", "Segoe UI", sans-serif;
+    color: #E0E7FF; /* Soft lavender-white for text */
+    background-color: #0F172A; /* Deep navy background */
     border: none;
 }
 
 QMainWindow {
-    background-color: #1a202c; /* --background */
+    background-color: #0F172A;
 }
 
 /* ---- Sidebar ---- */
 #sidebar {
-    background-color: #312e81; /* --secondary */
+    background-color: #1E293B; /* Dark slate blue */
+    border-right: 1px solid #334155; /* Subtle border */
 }
 
 #sidebar #titleLabel {
     font-size: 22px;
     font-weight: bold;
-    color: #ffffff;
-    padding: 10px;
+    color: #A5B4FC; /* Soft lavender */
+    padding: 12px 10px;
+    letter-spacing: 0.5px;
 }
 
 #sidebar QPushButton {
     background-color: transparent;
-    color: #e0e7ff; /* --secondary-foreground */
+    color: #CBD5E1; /* Light gray-blue */
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 5px;
+    padding: 12px 10px;
+    margin-bottom: 8px;
     text-align: left;
+    font-weight: 500;
 }
 
 #sidebar QPushButton:hover {
-    background-color: #6366f1; /* --accent */
-    color: #ffffff; /* --accent-foreground */
+    background-color: #334155; /* Medium slate blue */
+    color: #E0E7FF;
 }
 
-/* Custom property to identify the active button */
+/* Active button state */
 #sidebar QPushButton[active="true"] {
-    background-color: #6366f1; /* --accent */
-    color: #ffffff; /* --accent-foreground */
+    background-color: #4F46E5; /* Deep indigo */
+    color: #FFFFFF;
+    font-weight: 600;
+    border-left: 4px solid #818CF8; /* Light indigo accent */
 }
 
-
-/* Main content area */
+/* ---- Main Content Area ---- */
 #mainContent {
-    background-color: #1a202c;
+    background-color: #0F172A;
+    padding: 5px;
+}
+
+/* ---- Typography & Headers ---- */
+#sectionHeader {
+    font-size: 28px;
+    font-weight: 600;
+    color: #818CF8; /* Light indigo */
+    padding-bottom: 20px;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
 }
 
 #cardTitleLabel {
-    font-weight: bold;
-    font-size: 16px;
-    background-color: transparent;
-}
-
-/* Headers like "Welcome to Turbo GST" */
-#sectionHeader {
-    font-size: 24px;
     font-weight: 600;
-    color: #e2e8f0;
-    padding-bottom: 15px;
+    font-size: 18px;
+    background-color: transparent;
+    color: #E0E7FF;
+    padding-bottom: 10px;
 }
 
-/* The main card-like container for content */
+/* ---- Card Design ---- */
 #contentCard {
-    background-color: #2d3748; /* --card 2d3748*/
-    border: 1px solid #433e95; /* --border */
-    border-radius: 8px;
+    background-color: #1E293B; /* Dark slate blue */
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
 }
 
-/* Labels with descriptive text */
+/* ---- Descriptive Text ---- */
 #descriptionLabel {
     background-color: transparent;
-    color: #a0aec0; /* Lighter text */
+    color: #94A3B8; /* Muted blue-gray */
     font-size: 14px;
+    line-height: 1.6;
+    padding: 5px 0;
 }
 
 /* ---- GSTR-1 Page Specifics ---- */
-#pathDisplayButton {
-    background-color: #1f2937; /* --popover */
-    border: 1px solid #433e95; /* --border */
+#fileSelectButton, #folderSelectButton {
+    background-color: #4F46E5; /* Deep indigo */
+    color: white;
+    border: none;
     border-radius: 8px;
-    padding: 10px;
+    padding: 10px 15px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+#fileSelectButton:hover, #folderSelectButton:hover {
+    background-color: #6366F1; /* Lighter indigo */
+}
+
+#pathDisplayButton {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 15px;
     text-align: left;
+    color: #CBD5E1;
+    margin: 10px 0;
 }
 
 #pathDisplayButton:hover {
-    border-color: #6366f1; /* --accent */
-}
-
-#optionsHeaderButton {
-    background-color: transparent;
-    border-bottom: 1px solid #433e95;
-    padding: 10px;
-    text-align: left;
-    font-weight: bold;
+    border-color: #4F46E5;
+    background-color: #334155;
 }
 
 #optionsContainer {
-    background-color: #2d3748;
-    border: 1px solid #433e95;
-    border-radius: 8px;
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    margin: 15px 0;
+}
+
+#optionsHeaderButton {
+    background-color: #334155;
+    border: none;
+    border-bottom: 1px solid #334155;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #E0E7FF;
+    font-size: 16px;
+}
+
+#optionsHeaderButton:hover {
+    background-color: #475569;
 }
 
 #optionsBody {
-    padding: 10px;
+    padding: 15px;
+    background-color: #0F172A;
 }
 
+/* ---- Checkbox Styling ---- */
 QCheckBox {
-    spacing: 10px; /* Space between checkbox and text */
+    spacing: 12px;
+    font-size: 14px;
+    color: #CBD5E1;
+    padding: 8px 0;
 }
 
 QCheckBox::indicator {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background-color: #334155;
+    border: 1px solid #475569;
 }
 
-QCheckBox::indicator:unchecked {
-    background-color: #4a5568;
-    border-radius: 4px;
+QCheckBox::indicator:unchecked:hover {
+    background-color: #475569;
+    border-color: #64748B;
 }
 
 QCheckBox::indicator:checked {
-    background-color: #4f46e5; /* --primary */
-    border-radius: 4px;
+    background-color: #4F46E5;
+    border: none;
+}
+
+QCheckBox:hover {
+    color: #E0E7FF;
 }
 
 /* ---- Convert Button ---- */
 #convertButton {
-    background-color: #4f46e5; /* --primary */
-    color: #ffffff; /* --primary-foreground */
-    padding: 12px;
-    font-weight: bold;
-    border-radius: 8px;
+    background-color: #0EA5E9; /* Cyan */
+    color: #FFFFFF;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 15px;
 }
 
 #convertButton:hover {
-    background-color: #4338ca;
+    background-color: #38BDF8; /* Lighter cyan */
+}
+
+#convertButton:pressed {
+    background-color: #0284C7; /* Darker cyan */
 }
 
 /* ---- Status Bar ---- */
 QStatusBar {
-    background-color: transparent;
-    color: #e0e7ff; /* --secondary-foreground */
-    font-size: 12px;
-    padding: 5px;
+    background-color: #1E293B;
+    color: #CBD5E1;
+    font-size: 13px;
+    border-top: 1px solid #334155;
 }
 
 QStatusBar QLabel {
     background-color: transparent;
-    color: #e0e7ff;
+    color: #CBD5E1;
+    padding: 5px;
 }
 
 QStatusBar::item {
-    border: none; /* Do not add borders between items */
+    border: none;
+}
+
+/* ---- Scrollbar Styling ---- */
+QScrollBar:vertical {
+    background: #1E293B;
+    width: 12px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical {
+    background: #475569;
+    min-height: 30px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #64748B;
+}
+
+QScrollBar:horizontal {
+    background: #1E293B;
+    height: 12px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #475569;
+    min-width: 30px;
+    border-radius: 6px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #64748B;
+}
+
+/* ---- Input Fields ---- */
+QLineEdit, QTextEdit, QComboBox {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #E0E7FF;
+}
+
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+    border: 1px solid #4F46E5;
+    outline: none;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: url(resources/icons/arrow_down.svg);
+    width: 12px;
+    height: 12px;
+}
+
+/* ---- Table Styling ---- */
+QTableView, QTreeView, QListView {
+    background-color: #1E293B;
+    alternate-background-color: #0F172A;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    gridline-color: #334155;
+}
+
+QTableView::item, QTreeView::item, QListView::item {
+    padding: 8px;
+}
+
+QTableView::item:selected, QTreeView::item:selected, QListView::item:selected {
+    background-color: #4F46E5;
+    color: white;
+}
+
+QHeaderView::section {
+    background-color: #334155;
+    color: #E0E7FF;
+    padding: 10px;
+    border: none;
+    border-right: 1px solid #1E293B;
+    font-weight: 600;
 }

@@ -1,0 +1,374 @@
+/*
+ * Turbo-GST Enhanced Light Theme
+ * More vibrant with better borders, shadows, and visual depth
+ */
+
+/* ---- Global Settings ---- */
+QWidget {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    color: #334155; /* Darker text for better contrast */
+    background-color: #F8FAFC; /* Clean light background */
+    border: none;
+}
+
+QMainWindow {
+    background-color: #F8FAFC;
+}
+
+/* ---- Sidebar ---- */
+#sidebar {
+    background-color: #FFFFFF; /* Pure white sidebar */
+    border-right: 1px solid #E2E8F0; /* Visible border */
+    border-right-width: 2px;
+}
+
+#sidebar #titleLabel {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4F46E5; /* Indigo accent */
+    padding: 12px 10px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+#sidebar QPushButton {
+    background-color: transparent;
+    color: #475569; /* Darker text */
+    border-radius: 8px;
+    padding: 12px 10px;
+    margin-bottom: 8px;
+    text-align: left;
+    font-weight: 500;
+    border: 1px solid transparent; /* For consistent sizing */
+}
+
+#sidebar QPushButton:hover {
+    background-color: #F1F5F9; /* Subtle hover background */
+    color: #4F46E5; /* Indigo on hover */
+    border: 1px solid #E2E8F0; /* Visible border on hover */
+}
+
+/* Active button state */
+#sidebar QPushButton[active="true"] {
+    background-color: #EEF2FF; /* Very light indigo */
+    color: #4F46E5; /* Indigo text */
+    font-weight: 600;
+    border-left: 4px solid #4F46E5; /* Indigo accent */
+    border: 1px solid #C7D2FE; /* Light indigo border */
+}
+
+/* ---- Main Content Area ---- */
+#mainContent {
+    background-color: #F8FAFC;
+    padding: 5px;
+}
+
+/* ---- Typography & Headers ---- */
+#sectionHeader {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1E293B; /* Dark slate */
+    padding-bottom: 20px;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+    border-bottom: 2px solid #E2E8F0; /* Decorative border */
+}
+
+#cardTitleLabel {
+    font-weight: 600;
+    font-size: 18px;
+    background-color: transparent;
+    color: #1E293B;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E2E8F0; /* Subtle separator */
+}
+
+/* ---- Card Design ---- */
+#contentCard {
+    background-color: #FFFFFF; /* White cards */
+    border: 1px solid #E2E8F0; /* Visible border */
+    border-radius: 12px;
+    padding: 20px;
+    border-width: 2px; /* Thicker border */
+}
+
+/* ---- Descriptive Text ---- */
+#descriptionLabel {
+    background-color: transparent;
+    color: #64748B; /* Medium gray */
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 5px 0;
+}
+
+/* ---- GSTR-1 Page Specifics ---- */
+#fileSelectButton, #folderSelectButton {
+    background-color: #4F46E5; /* Indigo */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: 500;
+    margin-right: 10px;
+    border: 1px solid #4F46E5; /* Add border for consistency */
+}
+
+#fileSelectButton:hover, #folderSelectButton:hover {
+    background-color: #6366F1; /* Lighter indigo */
+    border-color: #6366F1;
+}
+
+#pathDisplayButton {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0; /* Visible border */
+    border-radius: 8px;
+    padding: 12px 15px;
+    text-align: left;
+    color: #475569;
+    margin: 10px 0;
+    border-width: 2px; /* Thicker border */
+}
+
+#pathDisplayButton:hover {
+    border-color: #4F46E5; /* Indigo on hover */
+    background-color: #F8FAFC;
+}
+
+#optionsContainer {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0; /* Visible border */
+    border-radius: 12px;
+    margin: 15px 0;
+    border-width: 2px; /* Thicker border */
+}
+
+#optionsHeaderButton {
+    background-color: #F8FAFC; /* Light background */
+    border: none;
+    border-bottom: 1px solid #E2E8F0; /* Visible border */
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #1E293B;
+    font-size: 16px;
+    border-bottom-width: 2px; /* Thicker border */
+}
+
+#optionsHeaderButton:hover {
+    background-color: #F1F5F9; /* Slightly darker on hover */
+}
+
+#optionsBody {
+    padding: 15px;
+    background-color: #F8FAFC; /* Light background */
+}
+
+/* ---- Checkbox Styling ---- */
+QCheckBox {
+    spacing: 12px;
+    font-size: 14px;
+    color: #475569;
+    padding: 8px 0;
+}
+
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    border: 2px solid #E2E8F0; /* Visible border */
+}
+
+QCheckBox::indicator:unchecked:hover {
+    background-color: #F1F5F9;
+    border-color: #CBD5E1; /* Darker border on hover */
+}
+
+QCheckBox::indicator:checked {
+    background-color: #4F46E5;
+    border: 2px solid #4F46E5;
+}
+
+QCheckBox:hover {
+    color: #4F46E5;
+}
+
+/* ---- Convert Button ---- */
+#convertButton {
+    background-color: #0EA5E9; /* Cyan */
+    color: #FFFFFF;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 15px;
+    border: 2px solid #0EA5E9; /* Add border */
+}
+
+#convertButton:hover {
+    background-color: #38BDF8; /* Lighter cyan */
+    border-color: #38BDF8;
+}
+
+#convertButton:pressed {
+    background-color: #0284C7; /* Darker cyan */
+    border-color: #0284C7;
+}
+
+/* ---- Status Bar ---- */
+QStatusBar {
+    background-color: #FFFFFF;
+    color: #64748B;
+    font-size: 13px;
+    border-top: 2px solid #E2E8F0; /* Visible border */
+}
+
+QStatusBar QLabel {
+    background-color: transparent;
+    color: #64748B;
+    padding: 5px;
+}
+
+QStatusBar::item {
+    border: none;
+}
+
+/* ---- Scrollbar Styling ---- */
+QScrollBar:vertical {
+    background: #F1F5F9;
+    width: 12px;
+    border-radius: 6px;
+    border: 1px solid #E2E8F0; /* Visible border */
+}
+
+QScrollBar::handle:vertical {
+    background: #CBD5E1;
+    min-height: 30px;
+    border-radius: 6px;
+    border: 1px solid #CBD5E1;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #94A3B8;
+    border-color: #94A3B8;
+}
+
+QScrollBar:horizontal {
+    background: #F1F5F9;
+    height: 12px;
+    border-radius: 6px;
+    border: 1px solid #E2E8F0; /* Visible border */
+}
+
+QScrollBar::handle:horizontal {
+    background: #CBD5E1;
+    min-width: 30px;
+    border-radius: 6px;
+    border: 1px solid #CBD5E1;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #94A3B8;
+    border-color: #94A3B8;
+}
+
+/* ---- Input Fields ---- */
+QLineEdit, QTextEdit, QComboBox {
+    background-color: #FFFFFF;
+    border: 2px solid #E2E8F0; /* Visible border */
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #1E293B;
+}
+
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+    border: 2px solid #4F46E5; /* Indigo on focus */
+    outline: none;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: url(resources/icons/arrow_down.svg);
+    width: 12px;
+    height: 12px;
+}
+
+/* ---- Table Styling ---- */
+QTableView, QTreeView, QListView {
+    background-color: #FFFFFF;
+    alternate-background-color: #F8FAFC;
+    border: 2px solid #E2E8F0; /* Visible border */
+    border-radius: 8px;
+    gridline-color: #E2E8F0;
+}
+
+QTableView::item, QTreeView::item, QListView::item {
+    padding: 8px;
+    border-bottom: 1px solid #F1F5F9; /* Row separators */
+}
+
+QTableView::item:selected, QTreeView::item:selected, QListView::item:selected {
+    background-color: #EEF2FF; /* Light indigo selection */
+    color: #4F46E5;
+}
+
+QHeaderView::section {
+    background-color: #F8FAFC;
+    color: #475569;
+    padding: 10px;
+    border: none;
+    border-right: 1px solid #E2E8F0;
+    border-bottom: 2px solid #E2E8F0; /* Thicker border */
+    font-weight: 600;
+}
+
+/* ---- Group Box Styling ---- */
+QGroupBox {
+    background-color: #FFFFFF;
+    border: 2px solid #E2E8F0; /* Visible border */
+    border-radius: 8px;
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    color: #4F46E5; /* Indigo title */
+    font-weight: bold;
+}
+
+/* ---- Radio Button Styling ---- */
+QRadioButton {
+    spacing: 8px;
+    font-size: 14px;
+    color: #475569;
+    padding: 5px 0;
+}
+
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    border: 2px solid #E2E8F0; /* Visible border */
+    background-color: #FFFFFF;
+}
+
+QRadioButton::indicator:unchecked:hover {
+    border-color: #CBD5E1; /* Darker on hover */
+}
+
+QRadioButton::indicator:checked {
+    border: 2px solid #4F46E5;
+    background-color: #FFFFFF;
+}
+
+QRadioButton:hover {
+    color: #4F46E5;
+}
