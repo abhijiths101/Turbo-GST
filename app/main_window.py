@@ -51,6 +51,17 @@ class MainWindow(QMainWindow):
         # Set initial page
         self._update_active_button(self.home_button)
 
+    def get_icon_path(self, icon_name):
+        """Get the icon path based on current theme"""
+        if self.current_theme == "light":
+            # Check if light version exists
+            light_icon_path = os.path.join('resources', 'icons', f'{icon_name}_light.svg')
+            if os.path.exists(light_icon_path):
+                return light_icon_path
+        
+        # Default to dark theme icon
+        return os.path.join('resources', 'icons', f'{icon_name}.svg')
+
     def apply_theme(self, theme):
         """Apply the selected theme to the application"""
         try:
@@ -65,8 +76,42 @@ class MainWindow(QMainWindow):
             self.settings.setValue("theme", theme)
             self.current_theme = theme
             self.status_label.setText(f"Status: Theme changed to {theme}")
+            
+            # Update all icons
+            self.update_all_icons()
         except FileNotFoundError as e:
             print(f"Warning: Stylesheet not found. {e}")
+
+    def update_all_icons(self):
+        """Update all icons in the application based on current theme"""
+        # Update sidebar toggle button
+        self.toggle_button.setIcon(QIcon(self.get_icon_path("left_arrow" if not self.is_sidebar_collapsed else "right_arrow")))
+        
+        # Update menu buttons
+        for btn, data in self.menu_buttons.items():
+            btn.setIcon(QIcon(self.get_icon_path(data["icon"])))
+        
+        # Update GSTR-1 page icons
+        if hasattr(self, 'gstr1_page'):
+            # Find and update file and folder buttons
+            for child in self.gstr1_page.findChildren(QPushButton):
+                if child.objectName() == "fileSelectButton":
+                    child.setIcon(QIcon(self.get_icon_path("file")))
+                elif child.objectName() == "folderSelectButton":
+                    child.setIcon(QIcon(self.get_icon_path("folder")))
+                elif child.objectName() == "pathDisplayButton":
+                    # Check if it's source or destination path button
+                    if "source" in child.text().lower():
+                        child.setIcon(QIcon(self.get_icon_path("source")))
+                    elif "destination" in child.text().lower():
+                        child.setIcon(QIcon(self.get_icon_path("destination")))
+                elif child.objectName() == "convertButton":
+                    child.setIcon(QIcon(self.get_icon_path("convert")))
+                elif child.objectName() == "optionsHeaderButton":
+                    if self.options_body.isVisible():
+                        child.setIcon(QIcon(self.get_icon_path("arrow_down")))
+                    else:
+                        child.setIcon(QIcon(self.get_icon_path("arrow_up")))
 
     def _create_sidebar(self):
         sidebar = QWidget()
@@ -82,7 +127,7 @@ class MainWindow(QMainWindow):
         self.title_label.setObjectName("titleLabel")
         
         self.toggle_button = QPushButton()
-        self.toggle_button.setIcon(QIcon(os.path.join('resources', 'icons', 'left_arrow.svg')))
+        self.toggle_button.setIcon(QIcon(self.get_icon_path("left_arrow")))
         self.toggle_button.setFixedSize(28, 28)
         self.toggle_button.setIconSize(QSize(28, 28))
         self.toggle_button.clicked.connect(self.toggle_sidebar)
@@ -108,7 +153,7 @@ class MainWindow(QMainWindow):
         }
         
         for btn, data in self.menu_buttons.items():
-            btn.setIcon(QIcon(os.path.join('resources', 'icons', f'{data["icon"]}.svg')))
+            btn.setIcon(QIcon(self.get_icon_path(data["icon"])))
             btn.setText(f" {data['text']}")
             btn.setIconSize(QSize(24, 24))
 
@@ -256,11 +301,11 @@ class MainWindow(QMainWindow):
 
         file_select_layout = QHBoxLayout()
         file_button = QPushButton("Select File(s)")
-        file_button.setIcon(QIcon(os.path.join('resources', 'icons', 'file.svg')))
+        file_button.setIcon(QIcon(self.get_icon_path("file")))
         file_button.setIconSize(QSize(24, 24))
         file_button.setObjectName("fileSelectButton")
         folder_button = QPushButton("Select Folder")
-        folder_button.setIcon(QIcon(os.path.join('resources', 'icons', 'folder.svg')))
+        folder_button.setIcon(QIcon(self.get_icon_path("folder")))
         folder_button.setIconSize(QSize(24, 24))
         folder_button.setObjectName("folderSelectButton")
         file_select_layout.addWidget(file_button)
@@ -269,13 +314,13 @@ class MainWindow(QMainWindow):
         card_layout.addLayout(file_select_layout)
 
         source_path_button = QPushButton("Select source path...")
-        source_path_button.setIcon(QIcon(os.path.join('resources', 'icons', 'source.svg')))
+        source_path_button.setIcon(QIcon(self.get_icon_path("source")))
         source_path_button.setIconSize(QSize(24, 24))
         source_path_button.setObjectName("pathDisplayButton")
         card_layout.addWidget(source_path_button)
 
         dest_path_button = QPushButton("Select destination path...")
-        dest_path_button.setIcon(QIcon(os.path.join('resources', 'icons', 'destination.svg')))
+        dest_path_button.setIcon(QIcon(self.get_icon_path("destination")))
         dest_path_button.setIconSize(QSize(24, 24))
         dest_path_button.setObjectName("pathDisplayButton")
         card_layout.addWidget(dest_path_button)
@@ -287,6 +332,7 @@ class MainWindow(QMainWindow):
         options_layout.setSpacing(0)
 
         self.options_header = QPushButton()
+        self.options_header.setIcon(QIcon(self.get_icon_path("arrow_down")))
         self.options_header.setObjectName("optionsHeaderButton")
         self.options_header.setCheckable(True)
         self.options_header.setChecked(True)
@@ -307,7 +353,7 @@ class MainWindow(QMainWindow):
         self.on_options_toggled(True) # Set initial state
 
         convert_button = QPushButton("Convert")
-        convert_button.setIcon(QIcon(os.path.join('resources', 'icons', 'convert.svg')))
+        convert_button.setIcon(QIcon(self.get_icon_path("convert")))
         convert_button.setIconSize(QSize(24, 24))
         convert_button.setObjectName("convertButton")
         card_layout.addWidget(convert_button)
@@ -341,10 +387,10 @@ class MainWindow(QMainWindow):
         self.options_body.setVisible(checked)
         if checked:
             self.options_header.setText("Options")
-            self.options_header.setIcon(QIcon(os.path.join('resources', 'icons', 'arrow_down.svg')))
+            self.options_header.setIcon(QIcon(self.get_icon_path("arrow_down")))
         else:
             self.options_header.setText("Options")
-            self.options_header.setIcon(QIcon(os.path.join('resources', 'icons', 'arrow_up.svg')))
+            self.options_header.setIcon(QIcon(self.get_icon_path("arrow_up")))
 
     def toggle_sidebar(self):
         self.is_sidebar_collapsed = not self.is_sidebar_collapsed
@@ -360,10 +406,11 @@ class MainWindow(QMainWindow):
             else:
                 btn.setText(f" {data['text']}")
         
+        # Update toggle button icon
         if self.is_sidebar_collapsed:
-            self.toggle_button.setIcon(QIcon(os.path.join('resources', 'icons', 'right_arrow.svg')))
+            self.toggle_button.setIcon(QIcon(self.get_icon_path("right_arrow")))
         else:
-            self.toggle_button.setIcon(QIcon(os.path.join('resources', 'icons', 'left_arrow.svg')))
+            self.toggle_button.setIcon(QIcon(self.get_icon_path("left_arrow")))
 
         self.animation = QPropertyAnimation(self.sidebar, b"minimumWidth")
         self.animation.setDuration(250)
