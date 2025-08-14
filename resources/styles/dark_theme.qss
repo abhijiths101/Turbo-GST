@@ -1,0 +1,162 @@
+/*
+ * Turbo-GST Dark Theme
+ * Translated from turbo_gst_dark_ui_v2.html
+ */
+
+/* ---- Global Settings ---- */
+QWidget {
+    font-family: "Inter", sans-serif;
+    color: #e2e8f0; /* --foreground */
+    background-color: #1a202c; /* --background */
+    border: none;
+}
+
+QMainWindow {
+    background-color: #1a202c; /* --background */
+}
+
+/* ---- Sidebar ---- */
+#sidebar {
+    background-color: #312e81; /* --secondary */
+}
+
+#sidebar #titleLabel {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 10px;
+}
+
+#sidebar QPushButton {
+    background-color: transparent;
+    color: #e0e7ff; /* --secondary-foreground */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+#sidebar QPushButton:hover {
+    background-color: #6366f1; /* --accent */
+    color: #ffffff; /* --accent-foreground */
+}
+
+/* Custom property to identify the active button */
+#sidebar QPushButton[active="true"] {
+    background-color: #6366f1; /* --accent */
+    color: #ffffff; /* --accent-foreground */
+}
+
+
+/* Main content area */
+#mainContent {
+    background-color: #1a202c;
+}
+
+#cardTitleLabel {
+    font-weight: bold;
+    font-size: 16px;
+    background-color: transparent;
+}
+
+/* Headers like "Welcome to Turbo GST" */
+#sectionHeader {
+    font-size: 24px;
+    font-weight: 600;
+    color: #e2e8f0;
+    padding-bottom: 15px;
+}
+
+/* The main card-like container for content */
+#contentCard {
+    background-color: #2d3748; /* --card 2d3748*/
+    border: 1px solid #433e95; /* --border */
+    border-radius: 8px;
+}
+
+/* Labels with descriptive text */
+#descriptionLabel {
+    background-color: transparent;
+    color: #a0aec0; /* Lighter text */
+    font-size: 14px;
+}
+
+/* ---- GSTR-1 Page Specifics ---- */
+#pathDisplayButton {
+    background-color: #1f2937; /* --popover */
+    border: 1px solid #433e95; /* --border */
+    border-radius: 8px;
+    padding: 10px;
+    text-align: left;
+}
+
+#pathDisplayButton:hover {
+    border-color: #6366f1; /* --accent */
+}
+
+#optionsHeaderButton {
+    background-color: transparent;
+    border-bottom: 1px solid #433e95;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+#optionsContainer {
+    background-color: #2d3748;
+    border: 1px solid #433e95;
+    border-radius: 8px;
+}
+
+#optionsBody {
+    padding: 10px;
+}
+
+QCheckBox {
+    spacing: 10px; /* Space between checkbox and text */
+}
+
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+}
+
+QCheckBox::indicator:unchecked {
+    background-color: #4a5568;
+    border-radius: 4px;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #4f46e5; /* --primary */
+    border-radius: 4px;
+}
+
+/* ---- Convert Button ---- */
+#convertButton {
+    background-color: #4f46e5; /* --primary */
+    color: #ffffff; /* --primary-foreground */
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+#convertButton:hover {
+    background-color: #4338ca;
+}
+
+/* ---- Status Bar ---- */
+QStatusBar {
+    background-color: transparent;
+    color: #e0e7ff; /* --secondary-foreground */
+    font-size: 12px;
+    padding: 5px;
+}
+
+QStatusBar QLabel {
+    background-color: transparent;
+    color: #e0e7ff;
+}
+
+QStatusBar::item {
+    border: none; /* Do not add borders between items */
+}

@@ -1,0 +1,65 @@
+.test
+.venv
+screenshots
+# Python-specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE and editor files
+.idea/  # PyCharm
+.vscode/  # VS Code
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Dependency lock files (if not needed in repo)
+requirements.txt.lock
+Pipfile.lock
+
+# Logging
+logs/
+
+# Sensitive data
+.env
+*.log
+*.sqlite3
+
+# Build artifacts
+*.o
+*.exe
+*.dll
+*.so
+
+# Testing and coverage
+.coverage
+coverage.xml
+*.cover
+pytest_cache/
+
+# PySide6-specific (if applicable)
+ui_*.py  # Generated UI files from .ui files
+rcc_*.py  # Generated resource files
+
+.superdesign
+.pytest_cache
+.cursor
+tests
+
+
+advice.md
+analysis.md

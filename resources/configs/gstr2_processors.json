@@ -1,0 +1,50 @@
+{
+  "b2b": {
+    "sheet_name": "B2B Invoices",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "ctin",
+      "item_key": "inv"
+    }
+  },
+  "cdnr": {
+    "sheet_name": "Credit/Debit Notes (Reg)",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "ctin",
+      "item_key": "nt"
+    }
+  },
+  "b2ba": {
+    "sheet_name": "B2B Amended",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "ctin",
+      "item_key": "inv"
+    }
+  },
+  "cdnra": {
+    "sheet_name": "CDN Amended",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "ctin",
+      "item_key": "nt"
+    }
+  },
+  "isd": {
+    "sheet_name": "ISD Credits",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "ctin",
+      "item_key": "docdet"
+    }
+  },
+  "tds": {
+    "sheet_name": "TDS Credit",
+    "processor": "simple_dataframe"
+  },
+  "tcs": {
+    "sheet_name": "TCS Credit",
+    "processor": "simple_dataframe"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "gstin": "GSTIN",
+  "fp": "Filing Period",
+  "filing_typ": "Filing Type",
+  "fil_dt": "Filing Date",
+  "gt": "GT",
+  "cur_gt": "Current GT",
+  "b2b": {
+    "sheet_name": "B2B",
+    "processor": "flatten_and_normalize",
+    "record_path": ["inv", "itms"],
+    "meta": [
+      "ctin",
+      "cfs",
+      ["inv", "val"],
+      ["inv", "inv_typ"],
+      ["inv", "flag"],
+      ["inv", "pos"],
+      ["inv", "updby"],
+      ["inv", "idt"],
+      ["inv", "rchrg"],
+      ["inv", "inum"],
+      ["inv", "cflag"],
+      ["inv", "chksum"]
+    ],
+    "rename_dict": {
+      "itm_det.iamt": "IGST",
+      "itm_det.samt": "SGST",
+      "itm_det.rt": "Rate",
+      "itm_det.txval": "Taxable Value",
+      "itm_det.camt": "CGST",
+      "ctin": "GSTIN",
+      "cfs": "CFS",
+      "inv.val": "Invoice Value",
+      "inv.inv_typ": "Invoice Type",
+      "inv.flag": "Invoice Flag",
+      "inv.pos": "Place of Supply",
+      "inv.updby": "updby",
+      "inv.idt": "Date",
+      "inv.rchrg": "Reverse Charge",
+      "inv.inum": "Invoice Number",
+      "inv.cflag": "CFlag",
+      "inv.chksum": "Check Sum"
+    },
+    "order_df": [
+      "Date",
+      "Invoice Number",
+      "GSTIN",
+      "Invoice Value",
+      "Rate",
+      "Taxable Value",
+      "IGST",
+      "CGST",
+      "SGST",
+      "CFS",
+      "Invoice Type",
+      "Invoice Flag",
+      "Place of Supply",
+      "Reverse Charge",
+      "CFlag",
+      "Check Sum"
+    ]
+  },
+  "b2cs": {
+    "sheet_name": "B2C Small",
+    "processor": "simple_dataframe",
+    "record_path": "None",
+    "meta": "None",
+    "rename_dict": {
+      "csamt": "Cess", 
+      "samt": "SGST",
+      "rt": "Rate",
+      "flag": "Flag",
+      "pos" : "Place of Supply", 
+      "txval": "Taxable Value", 
+      "typ": "Type", 
+      "camt":"CGST" , 
+      "chksum" : "Check Sum",
+      "iamt" : "IGST", 
+      "sply_ty": "Supply Type"
+    },
+    "order_df": [
+      "Type",
+      "Rate",
+      "Taxable Value",
+      "IGST",
+      "CGST",
+      "SGST",
+      "Cess",
+      "Place of Supply",
+      "Supply Type",
+      "Flag",
+      "Check Sum"
+    ]
+  },
+  "b2cl": {
+    "sheet_name": "B2C Large",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "pos",
+      "item_key": "inv"
+    },
+    "rename_dict": {
+      "csamt": "Cess", 
+      "samt": "SGST",
+      "rt": "Rate",
+      "flag": "Flag",
+      "pos" : "Place of Supply", 
+      "txval": "Taxable Value", 
+      "typ": "Type", 
+      "camt":"CGST" , 
+      "chksum" : "Check Sum",
+      "iamt" : "IGST", 
+      "sply_ty": "Supply Type"
+    },
+    "order_df": [
+      "Type",
+      "Rate",
+      "Taxable Value",
+      "IGST",
+      "CGST",
+      "SGST",
+      "Cess",
+      "Place of Supply",
+      "Supply Type",
+      "Flag",
+      "Check Sum"
+    ]
+  },
+  "cdnr": {
+    "sheet_name": "Credit/Debit Notes (Reg)",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "ctin",
+      "item_key": "nt"
+    }
+  },
+  "cdnur": {
+    "sheet_name": "Credit/Debit Notes (Unreg)",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "typ",
+      "item_key": "nt"
+    }
+  },
+  "exp": {
+    "sheet_name": "Export Invoices",
+    "processor": "flatten_and_normalize",
+    "args": {
+      "record_key": "exp_typ",
+      "item_key": "inv"
+    }
+  },
+  "hsn": {
+    "sheet_name": "HSN Summary",
+    "processor": "hsn_summary_processor",
+    "record_path" : ["data"],
+    "meta" : ["flag", "chksum"]
+  },
+  "nil": {
+    "sheet_name": "Nil, Exempt, Non-GST",
+    "processor": "nil_summary_processor",
+    "record_path": ["inv"], 
+    "meta": ["flag", "chksum"]
+  },
+  "doc_issue": {
+    "sheet_name": "Documents Issued",
+    "processor": "doc_issue_processor",
+    "record_path" : ["doc_det", "docs"],
+    "meta" : ["flag", "chksum", ["doc_net", "doc_num"]]
+  }
+}
