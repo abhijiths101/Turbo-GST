@@ -7,7 +7,6 @@
   "cur_gt": "Current GT",
   "b2b": {
     "sheet_name": "B2B",
-    "processor": "flatten_and_normalize",
     "record_path": ["inv", "itms"],
     "meta": [
       "ctin",
@@ -63,20 +62,19 @@
   },
   "b2cs": {
     "sheet_name": "B2C Small",
-    "processor": "simple_dataframe",
-    "record_path": "None",
-    "meta": "None",
+    "record_path": null,
+    "meta": null,
     "rename_dict": {
-      "csamt": "Cess", 
+      "csamt": "Cess",
       "samt": "SGST",
       "rt": "Rate",
       "flag": "Flag",
-      "pos" : "Place of Supply", 
-      "txval": "Taxable Value", 
-      "typ": "Type", 
-      "camt":"CGST" , 
-      "chksum" : "Check Sum",
-      "iamt" : "IGST", 
+      "pos": "Place of Supply",
+      "txval": "Taxable Value",
+      "typ": "Type",
+      "camt": "CGST",
+      "chksum": "Check Sum",
+      "iamt": "IGST",
       "sply_ty": "Supply Type"
     },
     "order_df": [
@@ -95,22 +93,19 @@
   },
   "b2cl": {
     "sheet_name": "B2C Large",
-    "processor": "flatten_and_normalize",
-    "args": {
-      "record_key": "pos",
-      "item_key": "inv"
-    },
+    "meta": null,
+    "record_path": null,
     "rename_dict": {
-      "csamt": "Cess", 
+      "csamt": "Cess",
       "samt": "SGST",
       "rt": "Rate",
       "flag": "Flag",
-      "pos" : "Place of Supply", 
-      "txval": "Taxable Value", 
-      "typ": "Type", 
-      "camt":"CGST" , 
-      "chksum" : "Check Sum",
-      "iamt" : "IGST", 
+      "pos": "Place of Supply",
+      "txval": "Taxable Value",
+      "typ": "Type",
+      "camt": "CGST",
+      "chksum": "Check Sum",
+      "iamt": "IGST",
       "sply_ty": "Supply Type"
     },
     "order_df": [
@@ -128,45 +123,94 @@
     ]
   },
   "cdnr": {
-    "sheet_name": "Credit/Debit Notes (Reg)",
-    "processor": "flatten_and_normalize",
-    "args": {
-      "record_key": "ctin",
-      "item_key": "nt"
-    }
+    "sheet_name": "Credit/Debit Notes (Reg)"
   },
   "cdnur": {
-    "sheet_name": "Credit/Debit Notes (Unreg)",
-    "processor": "flatten_and_normalize",
-    "args": {
-      "record_key": "typ",
-      "item_key": "nt"
-    }
+    "sheet_name": "Credit/Debit Notes (Unreg)"
   },
   "exp": {
-    "sheet_name": "Export Invoices",
-    "processor": "flatten_and_normalize",
-    "args": {
-      "record_key": "exp_typ",
-      "item_key": "inv"
-    }
+    "sheet_name": "Export Invoices"
   },
   "hsn": {
     "sheet_name": "HSN Summary",
-    "processor": "hsn_summary_processor",
-    "record_path" : ["data"],
-    "meta" : ["flag", "chksum"]
+    "record_path": ["data"],
+    "meta": ["flag", "chksum"],
+    "rename_dict": {
+      "csamt": "Cess",
+      "samt": "SGST",
+      "rt": "Rate",
+      "uqc": "Unit Quantity Code",
+      "txval": "Taxable Value",
+      "num": "Number",
+      "qty": "Quantity",
+      "camt": "CGST",
+      "hsn_sc": "HSN/SAC Code",
+      "iamt": "IGST",
+      "flag": "Flag",
+      "chksum": "Check Sum"
+    },
+    "order_df": [
+      "HSN/SAC Code",
+      "Description",
+      "Unit Quantity Code",
+      "Quantity",
+      "Number",
+      "Rate",
+      "Taxable Value",
+      "IGST",
+      "CGST",
+      "SGST",
+      "Cess",
+      "Flag",
+      "Check Sum"
+    ]
   },
   "nil": {
     "sheet_name": "Nil, Exempt, Non-GST",
-    "processor": "nil_summary_processor",
-    "record_path": ["inv"], 
-    "meta": ["flag", "chksum"]
+    "record_path": ["inv"],
+    "meta": ["flag", "chksum"],
+    "rename_dict": {
+      "expt_amt": "Exempt Amount",
+      "nil_amt": "Nil Amount",
+      "ngsup_amt": "Non-GST Supply Amount",
+      "sply_ty": "Supply Type",
+      "flag": "Flag",
+      "chksum": "Check Sum"
+    },
+    "order_df": [
+      "Supply Type",
+      "Exempt Amount",
+      "Nil Amount",
+      "Non-GST Supply Amount",
+      "Flag",
+      "Check Sum"
+    ]
   },
   "doc_issue": {
     "sheet_name": "Documents Issued",
-    "processor": "doc_issue_processor",
-    "record_path" : ["doc_det", "docs"],
-    "meta" : ["flag", "chksum", ["doc_net", "doc_num"]]
+    "record_path": ["doc_det", "docs"],
+    "meta": ["flag", "chksum", ["doc_net", "doc_num"]],
+    "rename_dict": {
+      "cancel": "Cancelled",
+      "num": "Number",
+      "totnum": "Total Number",
+      "from": "From",
+      "to": "To",
+      "net_issue": "Net Issue",
+      "flag": "Flag",
+      "chksum": "Check Sum",
+      "doc_net.doc_num": "Document Net Number"
+    },
+    "order_df": [
+      "From",
+      "To",
+      "Number",
+      "Total Number",
+      "Net Issue",
+      "Cancelled",
+      "Document Net Number",
+      "Flag",
+      "Check Sum"
+    ]
   }
 }
