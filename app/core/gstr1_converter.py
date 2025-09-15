@@ -9,11 +9,11 @@ from app.core.common_processors import (flatten_and_normalize_data, simple_dataf
 
 # --- Constants ---
 BASE_CONFIG_DIR = Path(__file__).resolve().parents[2] / "resources" / "configs"
-STRUCTURE_PATH = BASE_CONFIG_DIR / "gstr1_processors.json"
+STRUCTURE_PATH = BASE_CONFIG_DIR / "gstr1_structure.json"
 
 STRUCTURE_FILE = load_json_from_path(STRUCTURE_PATH)
 
-BASIC_INFO_KEYS = ["gstin", "fp", "gt", "cur_gt"]
+# BASIC_INFO_KEYS = ["gstin", "fp", "gt", "cur_gt"]
 
 # --- Processor Mapping ---
 # Maps processor names from JSON config to actual Python functions
@@ -42,6 +42,7 @@ def convert_gstr1_json_to_excel(json_path, excel_path, config_path, structure_fi
     
     pass
 
+# Deprecated ; will be removed soon
 def convert_gstr1_to_excel(json_path, excel_path):
     """
     Reads a GSTR-1 JSON file, processes all its sections based on an external

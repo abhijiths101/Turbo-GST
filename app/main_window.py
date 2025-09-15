@@ -14,6 +14,17 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Turbo GST")
         self.resize(1024, 768)
         self.is_sidebar_collapsed = False
+        
+        # Define all checkbox options with default values (all True)
+        self.checkbox_options = {
+            "B2B": True,
+            "B2C": True,
+            "CDNR": True,
+            "Export": True
+        }
+        
+        # Initialize dictionary to store checkboxes
+        self.gstr1_checkboxes = {}
 
         # Main layout
         main_layout = QHBoxLayout()
@@ -100,7 +111,6 @@ class MainWindow(QMainWindow):
         return sidebar
 
     def _create_main_content(self):
-        # ... (This method remains the same as before)
         main_content = QWidget()
         main_content.setObjectName("mainContent")
         main_content_layout = QVBoxLayout(main_content)
@@ -143,7 +153,7 @@ class MainWindow(QMainWindow):
         card_layout = QVBoxLayout(card)
         
         instructions_title = QLabel("Instructions")
-        instructions_title.setObjectName("cardTitleLabel") # Use object name instead of inline style
+        instructions_title.setObjectName("cardTitleLabel")
         card_layout.addWidget(instructions_title)
 
         desc1 = QLabel("To get started, select either GSTR-1 or GSTR-2 from the sidebar menu. Then use the 'File' or 'Folder' buttons to select your JSON data.")
@@ -213,10 +223,14 @@ class MainWindow(QMainWindow):
         self.options_body = QWidget()
         self.options_body.setObjectName("optionsBody")
         options_grid = QGridLayout(self.options_body)
-        options_grid.addWidget(QCheckBox("B2B"), 0, 0)
-        options_grid.addWidget(QCheckBox("B2C"), 0, 2)
-        options_grid.addWidget(QCheckBox("CDNR"), 1, 0)
-        options_grid.addWidget(QCheckBox("Export"), 1, 1)
+        
+        # Create checkboxes from the options dictionary
+        for i, (key, default_value) in enumerate(self.checkbox_options.items()):
+            row, col = i // 2, (i % 2) * 2
+            checkbox = QCheckBox(key)
+            checkbox.setChecked(default_value)  # Set default value
+            self.gstr1_checkboxes[key] = checkbox
+            options_grid.addWidget(checkbox, row, col)
 
         options_layout.addWidget(self.options_header)
         options_layout.addWidget(self.options_body)
@@ -229,13 +243,13 @@ class MainWindow(QMainWindow):
         convert_button.setIcon(QIcon(os.path.join('resources', 'icons', 'convert.svg')))
         convert_button.setIconSize(QSize(24, 24))
         convert_button.setObjectName("convertButton")
+        convert_button.clicked.connect(self.on_convert_clicked)
         card_layout.addWidget(convert_button)
 
         layout.addWidget(card)
         return page
 
     def _create_placeholder_page(self, title):
-        # ... (This method remains the same)
         page = QWidget()
         layout = QVBoxLayout(page)
         label = QLabel(f"{title} page is under construction.")
@@ -291,6 +305,26 @@ class MainWindow(QMainWindow):
         self.animation.setEndValue(end_width)
         self.animation.setEasingCurve(QEasingCurve.InOutCubic)
         self.animation.start()
+    
+    def get_checkbox_states(self):
+        """Get current checkbox states as a dictionary"""
+        return {key: checkbox.isChecked() for key, checkbox in self.gstr1_checkboxes.items()}
+    
+    def on_convert_clicked(self):
+        """Handle convert button click"""
+        # Get checkbox states as a dictionary
+        checkbox_states = self.get_checkbox_states()
+        
+        # Update status bar to show the states (for demonstration)
+        self.status_label.setText(f"Status: Converting with options: {checkbox_states}")
+        
+        # Here you would pass the dictionary to your converter functions
+        # For example:
+        # converter_function(checkbox_states)
+        
+        # For demonstration, print to console
+        print("Checkbox states as dictionary:")
+        print(checkbox_states)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
