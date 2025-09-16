@@ -2,11 +2,13 @@ import sys
 import os
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QPushButton,
-    QLabel, QStackedWidget, QStatusBar, QFrame, QGridLayout, QCheckBox
+    QLabel, QStackedWidget, QStatusBar, QFrame, QGridLayout, QCheckBox, QFileDialog
 )
 from PySide6.QtCore import Qt, QSize, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QIcon
 from qt_material import apply_stylesheet, get_theme
+
+from app.core.gstr1_converter import convert_gstr1_json_to_excel
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -14,6 +16,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Turbo GST")
         self.resize(1024, 768)
         self.is_sidebar_collapsed = False
+        
+        self.gstr1_source_paths = None
+        self.gstr1_dest_path = None
         
         # Define all checkbox options with default values (all True)
         self.checkbox_options = {
@@ -188,26 +193,31 @@ class MainWindow(QMainWindow):
         file_button.setIcon(QIcon(os.path.join('resources', 'icons', 'file.svg')))
         file_button.setIconSize(QSize(24, 24))
         file_button.setObjectName("fileSelectButton")
+        file_button.clicked.connect(self._select_gstr1_source_files)
+        
         folder_button = QPushButton("Select Folder")
         folder_button.setIcon(QIcon(os.path.join('resources', 'icons', 'folder.svg')))
         folder_button.setIconSize(QSize(24, 24))
         folder_button.setObjectName("folderSelectButton")
+        folder_button.clicked.connect(self._select_gstr1_source_folder)
+        
         file_select_layout.addWidget(file_button)
         file_select_layout.addWidget(folder_button)
         file_select_layout.addStretch()
         card_layout.addLayout(file_select_layout)
 
-        source_path_button = QPushButton("Select source path...")
-        source_path_button.setIcon(QIcon(os.path.join('resources', 'icons', 'source.svg')))
-        source_path_button.setIconSize(QSize(24, 24))
-        source_path_button.setObjectName("pathDisplayButton")
-        card_layout.addWidget(source_path_button)
+        self.gstr1_source_path_button = QPushButton("Select source path...")
+        self.gstr1_source_path_button.setIcon(QIcon(os.path.join('resources', 'icons', 'source.svg')))
+        self.gstr1_source_path_button.setIconSize(QSize(24, 24))
+        self.gstr1_source_path_button.setObjectName("pathDisplayButton")
+        card_layout.addWidget(self.gstr1_source_path_button)
 
-        dest_path_button = QPushButton("Select destination path...")
-        dest_path_button.setIcon(QIcon(os.path.join('resources', 'icons', 'destination.svg')))
-        dest_path_button.setIconSize(QSize(24, 24))
-        dest_path_button.setObjectName("pathDisplayButton")
-        card_layout.addWidget(dest_path_button)
+        self.gstr1_dest_path_button = QPushButton("Select destination path...")
+        self.gstr1_dest_path_button.setIcon(QIcon(os.path.join('resources', 'icons', 'destination.svg')))
+        self.gstr1_dest_path_button.setIconSize(QSize(24, 24))
+        self.gstr1_dest_path_button.setObjectName("pathDisplayButton")
+        self.gstr1_dest_path_button.clicked.connect(self._select_gstr1_dest_folder)
+        card_layout.addWidget(self.gstr1_dest_path_button)
 
         options_container = QFrame()
         options_container.setObjectName("optionsContainer")
@@ -224,11 +234,10 @@ class MainWindow(QMainWindow):
         self.options_body.setObjectName("optionsBody")
         options_grid = QGridLayout(self.options_body)
         
-        # Create checkboxes from the options dictionary
         for i, (key, default_value) in enumerate(self.checkbox_options.items()):
             row, col = i // 2, (i % 2) * 2
             checkbox = QCheckBox(key)
-            checkbox.setChecked(default_value)  # Set default value
+            checkbox.setChecked(default_value)
             self.gstr1_checkboxes[key] = checkbox
             options_grid.addWidget(checkbox, row, col)
 
@@ -237,13 +246,13 @@ class MainWindow(QMainWindow):
         card_layout.addWidget(options_container)
         
         self.options_header.toggled.connect(self.on_options_toggled)
-        self.on_options_toggled(True) # Set initial state
+        self.on_options_toggled(True)
 
         convert_button = QPushButton("Convert")
         convert_button.setIcon(QIcon(os.path.join('resources', 'icons', 'convert.svg')))
         convert_button.setIconSize(QSize(24, 24))
         convert_button.setObjectName("convertButton")
-        convert_button.clicked.connect(self.on_convert_clicked)
+        convert_button.clicked.connect(self.on_gstr1_convert_clicked)
         card_layout.addWidget(convert_button)
 
         layout.addWidget(card)
@@ -307,24 +316,59 @@ class MainWindow(QMainWindow):
         self.animation.start()
     
     def get_checkbox_states(self):
-        """Get current checkbox states as a dictionary"""
         return {key: checkbox.isChecked() for key, checkbox in self.gstr1_checkboxes.items()}
     
-    def on_convert_clicked(self):
-        """Handle convert button click"""
-        # Get checkbox states as a dictionary
+    def _select_gstr1_source_files(self):
+        files, _ = QFileDialog.getOpenFileNames(self, "Select GSTR-1 JSON Files", "", "JSON Files (*.json)")
+        if files:
+            self.gstr1_source_paths = files
+            self.gstr1_source_path_button.setText(f"{len(files)} file(s) selected")
+            self.status_label.setText(f"Status: Loaded {len(files)} source file(s).")
+
+    def _select_gstr1_source_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Folder Containing GSTR-1 JSON Files")
+        if folder:
+            self.gstr1_source_paths = [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith('.json')]
+            self.gstr1_source_path_button.setText(folder)
+            self.status_label.setText(f"Status: Loaded {len(self.gstr1_source_paths)} file(s) from folder.")
+
+    def _select_gstr1_dest_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder")
+        if folder:
+            self.gstr1_dest_path = folder
+            self.gstr1_dest_path_button.setText(folder)
+            self.status_label.setText("Status: Destination folder selected.")
+
+    def on_gstr1_convert_clicked(self):
+        if not self.gstr1_source_paths:
+            self.status_label.setText("Status: Error - Please select source file(s) or a folder.")
+            return
+        if not self.gstr1_dest_path:
+            self.status_label.setText("Status: Error - Please select a destination folder.")
+            return
+
         checkbox_states = self.get_checkbox_states()
+        self.status_label.setText(f"Status: Starting conversion with options: {checkbox_states}")
         
-        # Update status bar to show the states (for demonstration)
-        self.status_label.setText(f"Status: Converting with options: {checkbox_states}")
+        total_files = len(self.gstr1_source_paths)
+        success_count = 0
         
-        # Here you would pass the dictionary to your converter functions
-        # For example:
-        # converter_function(checkbox_states)
-        
-        # For demonstration, print to console
-        print("Checkbox states as dictionary:")
-        print(checkbox_states)
+        for i, json_path in enumerate(self.gstr1_source_paths):
+            base_name = os.path.basename(json_path)
+            excel_name = os.path.splitext(base_name)[0] + '.xlsx'
+            excel_path = os.path.join(self.gstr1_dest_path, excel_name)
+            
+            self.status_label.setText(f"Status: Converting {i+1}/{total_files}: {base_name}...")
+            QApplication.processEvents()
+
+            success, message = convert_gstr1_json_to_excel(json_path, excel_path)
+            
+            if success:
+                success_count += 1
+            else:
+                print(f"Failed to convert {json_path}: {message}")
+
+        self.status_label.setText(f"Status: Conversion complete. {success_count}/{total_files} file(s) converted successfully.")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -79,7 +79,7 @@ def load_json_from_path(json_path: str) -> dict:
     Loads a JSON file from the given path.
     """
 
-    if not json_path.lower().endswith('.json'):
+    if not str(json_path).lower().endswith('.json'):
         print(f"Error in load_json_from_path: The file '{json_path}' is not a JSON file.")
         return None
     try:
@@ -129,7 +129,7 @@ def process_basic_info(data, excel_path):
     filtered_data = {k: data[k] for k in non_nested_keys if k in data}
     basic_data_df = pd.DataFrame(filtered_data)
     
-    write_df_to_excel(basic_data_df, excel_path, sheet_name="Basic Info", headers=False, startcol=5, startrow=5)
+    write_df_to_excel(basic_data_df, excel_path, sheet_name="Basic Info", headers=False, startcol=9, startrow=7)
 
 def process_section(data, section_config: dict, excel_path):
     """Process a GST section using the provided config structure."""
