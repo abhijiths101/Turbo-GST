@@ -24,12 +24,18 @@ The application follows a standard structure for a Python desktop application:
 
 **1. Install Dependencies:**
 
-It is recommended to use a virtual environment.
+This project uses `uv` as its package manager.
 
+First, install `uv` if you don't have it:
 ```bash
-python -m venv .venv
+pip install uv
+```
+
+Then, create a virtual environment and install the dependencies from `pyproject.toml`:
+```bash
+uv venv
 source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
-pip install -r requirements.txt
+uv pip sync pyproject.toml
 ```
 
 **2. Run the Application:**
